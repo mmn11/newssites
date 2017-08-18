@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')</script>
+  <script>(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')</script>
+  <title>Financial News Reviews</title>
+</head>
+<body>
+  <p>
+   <form action="newsSite" method= "POST">
+    <input type="url" placeholder="full URL" name="urlName">
+    <button type="submit">Submit</button>
+  </form>
+  </p>
+  <h1>
+Financial News with Reviews
+  </h1>
+  <div class="container-fluid">
+    
+  </div>
+<ul class="urls">
+  <% for(var i=0; i<urls.length; i++) {%>
+    <li class="quote">
+     <% var imageURL="" 
+        if("articleImage" in urls[i]){
+          imageURL=urls[i].articleImage
+        }
+      
+      %>
+      
+      <span> <a href= <%=urls[i].urlName %> ><img src=<%= imageURL %> alt="no picture" style="width:50px;height:50px;">  %> </a>
+        <%= urls[i].articleDate %> 
+        <a href= <%=urls[i].urlName %> > <%= urls[i].articleTitle %> </a>
+        <a href= https://big-latency.glitch.me/author/<%=urls[i].articleAuthor %> > <%= urls[i].articleAuthor %></a>
+        <a href= <%=urls[i].urlName %> > <%= urls[i].articleSource %> </a>
+     <%= urls[i].articleDescription %>
+      </span>
+      
+    </li>
+ 
+  <% } %>
+  
+</ul>
+<!--   
+   <form action="/url" method="POST">
+    <input type="date" name="articleDate">
+    <input type="text" placeholder="article title" name="articleTitle"> 
+    <input type="text" placeholder="article author" name="articleAuthor"> 
+    <input type="text" placeholder="source" name="articleSource"> 
+    <input type="url" placeholder="full URL" name="urlName">
+    <input type="number" placeholder="rating 0-10" name="rating" min="1" max="10">
+    <input type="text" placeholder="review title" name="articleTitle"> 
+    <textarea name="message" rows="10" cols="30" placeholder="Your review"></textarea>
+    <button type="submit">Submit</button>
+  </form>-->
+ 
+</body>
+</html>
