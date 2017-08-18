@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Financial News Add A Review</title>
+</head>
+<body>
+
+  <h1>
+Add New Review
+  </h1>
+ 
+    <p>
+<%  let articleInfo=Object.keys(articles[0])
+    let title= ""
+    let url=""
+    let description=""
+    let site=""
+    let image=""
+    console.log(articleInfo)
+    if('title' in articles[0]) {
+      console.log("title")
+      title=articles[0].title
+    } 
+    if('url' in articles[0]) {
+      console.log("url")
+      url=articles[0].url
+    } 
+    if('description' in articles[0]) {
+      console.log("descript")
+      description=articles[0].description
+    }     
+    if('site_name' in articles[0]) {
+      console.log("site")
+      site=articles[0].site_name
+    } 
+    if('type' in articles[0]) {
+      console.log("image")
+      image=articles[0].image.url
+    }
+  
+    if('image' in articles[0]) {
+      console.log("image")
+      image=articles[0].image.url
+    }
+      %>
+  </p>
+  <div>
+      
+  <p><%=description %> </p>
+  <p><%= url %> </p>
+  
+  <p><%= image %> </p>    
+     <p><%=title %> </p>
+    <p>
+       <%= site %>
+    </p>
+    <a href=<%= url %>>
+    <img src=<%= image %> alt="no picture" style="width:50px;height:50px;">
+    </a>
+  </div>
+    <form action="/url" method="POST">
+    <input name="articleImage" value=<%= image%>  >
+    <label for="articleTitle">Article Title</label>
+    <input id="articleTitle type="text" value="<%= title %>" name="articleTitle" size=<%= title.length %>> 
+    <label for="articleDescription">Article Description</label>
+    <input id="articleDescription" type="text" value="<%= description %>" name="articleDescription" size=<%= description.length %>> 
+    <label for="articleURL">Article URL</label>
+    <input id="articleURL" type="url" value="<%= url %>" name="urlName" size=<%= url.length %>>
+    <button type="submit">Submit</button>
+  </form> 
+</body>
+</html>
