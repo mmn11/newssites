@@ -59,10 +59,13 @@ app.get('/transfer*', (req,res)=>{
     for(let x in results){
 //      console.log(x)
 //      console.log(results[x]['headline'])
-     var url = "https://www.cnbc.com/2017/08/16/"+results[x]["headline"].split(" ").join('-')+".html"
-     console.log(url) 
-    
+     var url = results[x]["url"]
+//   console.log(url) 
      og(url, function(err, meta){
+       if(err){
+         console.log(err)
+       }
+    console.log(url)       
      console.log(meta);})
     }
   // //   db.collection('newsSites').save(meta,(err,results)=>{
@@ -103,41 +106,83 @@ app.post('/newsSite', (req, res)=>{
         db.collection('newsSites').save(meta,(err,results)=>{
     if(err) return console.log(err)
   })})
-  
-request(url, function (error, response, html) {
-  if (!error && response.statusCode == 200) {
-    var $ = cheerio.load(html);
-        let hh={};
-        let findSame={};    
-    let resultt = $('div.headline').text()
-//    console.log(resultt)
-    let resu=resultt.split(/\n/)
-    for (let x in resu){
-      let short=resu[x].substring(12)
-      hh={ headline: short};
-      var query = {};
-      var h="headline"
-      query[h] = short;
-//      hh={headline:"Consumers are shopping, showing economy may be stronger than expected"}
-      hh={headline:short}
-      if (resu[x].length<34){}
-      else{         
-        db.collection('articles').findOne(hh,(function(err,document){
-          if(err){throw err}
-          console.log(short)
+//test
+  request({
+  uri: url,
+}, function(error, response, body) {
+  var $ = cheerio.load(body);
+
+  $(".headline > a").each(function() {
+    var link = $(this);
+    var text = link.text();
+    var href = link.attr("href");
+    if (href==undefined){}
+    else{
+      href="https://www.cnbc.com"+href
+      var query ={}
+      query['url']=href
+ //     console.log(text + " -> " + href);
+      console.log(href)
+      console.log(query)
+      //search for duplicates
+      db.collection('articles').findOne(query,(function(err,document){
+      if(err){throw err}
+//      console.log(short)
 //          console.log(hh+"  kjhkjh//")
-          console.log(document)
-          console.log("doc")
-          if(document==null){
-         db.collection('articles').save({'headline':resu[x].substring(12)}, (err,results)=>{
-    if(err) return console.log(err)          
-        })}
+      console.log(document)
+      console.log("doc")
+      if(document==null){
+              
+      db.collection('articles').save({'url':href}, (err,results)=>{
+        if(err) return console.log(err)          
+        })
+}
         }                      
-))}
+))
+      
+      
+
+    }
+  });
+});
+  
+  
+  
+// request(url, function (error, response, html) {
+//   if (!error && response.statusCode == 200) {
+//     var $ = cheerio.load(html);
+//         let hh={};
+//         let findSame={};    
+// //    console.log($)
+// //    let resultt = $('div.headline').text()
+//     let resultt = $('a')
+// //    console.log(resultt)
+// //    let resu=resultt.split(/\n/)
+// let resu=resultt
+//     for (let x in resu){
+//       let short=resu[x].substring(12)
+//       hh={ headline: short};
+//       var query = {};
+//       var h="headline"
+//       query[h] = short;
+// //      hh={headline:"Consumers are shopping, showing economy may be stronger than expected"}
+//       hh={headline:short}
+//       if (resu[x].length<34){}
+//       else{         
+//         db.collection('articles').findOne(hh,(function(err,document){
+//           if(err){throw err}
+//           console.log(short)
+// //          console.log(hh+"  kjhkjh//")
+//           console.log(document)
+//           console.log("doc")
+//           if(document==null){
+//}
+//         }                      
+// ))}
 
       
   
-      }}})
+//       }}})
   
                
 
